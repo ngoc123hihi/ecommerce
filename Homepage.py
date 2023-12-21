@@ -17,12 +17,12 @@ st.set_page_config(
 show_pages(
     [
         Page("Homepage.py", "Homepage", "🏠"),
-        Page("pages/Customer.py", "Customer Analyst", ":customs:"),
-        Page("pages/Product.py", "Product Analyst", ":shopping_trolley:"),
-        Page("pages/Transaction.py", "Transaction Analyst", ":inbox_tray:"),
-        Page("pages/Product_Link.py", "Product Link Algorithm", ":linked_paperclips:"),
-        Page("pages/Revenue_Forecast.py", "Revenue Forecast Predict", ":chart_with_upwards_trend:"),
-        Page("pages/Cluster_Customers.py", "Cluster Customers", ":customs:"),
+        Page("pages/1_Customer.py", "Customer Analyst", ":customs:"),
+        Page("pages/2_Product.py", "Product Analyst", ":shopping_trolley:"),
+        Page("pages/3_Transaction.py", "Transaction Analyst", ":inbox_tray:"),
+        Page("pages/5_Product_Link.py", "Product Link Algorithm", ":linked_paperclips:"),
+        Page("pages/6_Revenue_Forecast.py", "Revenue Forecast Predict", ":chart_with_upwards_trend:"),
+        Page("pages/4_Cluster_Customers.py", "Cluster Customers", ":customs:"),
     ]
 )  
 
