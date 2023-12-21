@@ -33,21 +33,21 @@ uploaded_file3 = st.sidebar.file_uploader("Choose a data Transaction file", type
 
 if uploaded_file1 is None:
     with st.spinner('Please import Customer data ...'):
-        time.sleep(60)
+        time.sleep(360)
 else:
     df_customer = pd.read_csv(uploaded_file1)
 st.session_state['df_customer'] = df_customer
 
 if uploaded_file2 is None:
     with st.spinner('Please import Product data ...'):
-        time.sleep(60)
+        time.sleep(360)
 else: 
     df_product = pd.read_csv(uploaded_file2)
 st.session_state['df_product'] = df_product
 
 if uploaded_file3 is None:
     with st.spinner('Please import Transaction data ...'):
-        time.sleep(60)
+        time.sleep(360)
 else: 
     df_transaction = pd.read_csv(uploaded_file3)
 
