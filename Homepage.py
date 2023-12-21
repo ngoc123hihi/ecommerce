@@ -27,9 +27,9 @@ show_pages(
 )  
 
 # Sidebar for file upload
-uploaded_file1 = st.sidebar.file_uploader("Choose a data Customer file", type="csv")
-uploaded_file2 = st.sidebar.file_uploader("Choose a data Product file", type="csv")
-uploaded_file3 = st.sidebar.file_uploader("Choose a data Transaction file", type="csv")
+uploaded_file1 = st.sidebar.file_uploader("Choose a data Customer file", type="csv" , accept_multiple_files=False)
+uploaded_file2 = st.sidebar.file_uploader("Choose a data Product file", type="csv", accept_multiple_files=False)
+uploaded_file3 = st.sidebar.file_uploader("Choose a data Transaction file", type="csv", accept_multiple_files=False)
 
 if uploaded_file1 is None:
     with st.spinner('Please import Customer data ...'):
