@@ -23,7 +23,7 @@ product_df = product_df.rename(columns = {'id' : 'product_id'})
 
 df_transaction_cus = transaction_df.merge(customer_df , how = 'left' , on = 'customer_id')
 df_transaction_cus_prod = df_transaction_cus.merge(product_df , how = 'left' , on = 'product_id')
-df_transaction_trend = transaction_df
+df_transaction_trend = transaction_df.copy()
 
 import streamlit as st
 import pandas as pd
@@ -39,10 +39,11 @@ import networkx as nx
 # Create multiple tabs using st.submenu
 tabs = st.radio("Select a Tab:", ("Overview" , "Revenue Forecast"))
 
+df_transaction_trend['created_at'] = pd.to_datetime(df_transaction_trend['created_at'])
+df_transaction_trend.set_index('created_at', inplace=True)
+
 if tabs == "Overview":
     st.write("## Monthly trends in total sales.")
-    df_transaction_trend['created_at'] = pd.to_datetime(df_transaction_trend['created_at'])
-    df_transaction_trend.set_index('created_at', inplace=True)
 
     # Monthly sales trend
     fig = plt.figure(figsize=(width, height))
@@ -62,8 +63,7 @@ if tabs == "Overview":
         
 
 elif tabs == "Revenue Forecast":
-    df_transaction_trend['created_at'] = pd.to_datetime(df_transaction_trend['created_at'])
-    df_transaction_trend.set_index('created_at', inplace=True)
+
     weekly_sales = df_transaction_trend['total_amount'].resample('W').sum()
 
     st.write("We see that the series has a period of 1 year. The demand for shopping on e-commerce platforms increased in the months when the covid-19 epidemic began, when people stayed at home so shopping at home became more popular. In addition, we can use a seasonal decompose to extract the components that make up the series including: trend, season, residual like under:")

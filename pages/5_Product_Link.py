@@ -16,9 +16,6 @@ import networkx as nx
 # Create a fake sales dataset
 np.random.seed(0)
 
-# Save the DataFrame to a CSV file
-product_df = pd.read_csv('./Data/product.csv')
-
 maxUploadSize = 400
 
 # Max size, in megabytes, of messages that can be sent via the WebSocket
