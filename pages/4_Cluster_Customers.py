@@ -56,13 +56,15 @@ st.write("## Visualize Cluster Customer by KMeans")
 
 # Tạo tập dữ liệu cấp độ khách hàng với các số liệu liên quan để phân khúc
 customer_data = df_transaction_cus.groupby('full_name').agg({
-    'total_amount': ['sum', 'mean']
+    'total_amount': ['sum', 'mean'],
+    'join_time' : 'max'
 }).reset_index()
-customer_data.columns = ['full_name', 'Total Purchases', 'Average Purchase Amount']
+
+customer_data.columns = ['full_name', 'Total Purchases', 'Average Purchase Amount' , 'Join Time Customer']
 
 # Chuẩn hóa dữ liệu
 scaler = StandardScaler()
-scaled_data = scaler.fit_transform(customer_data[['Total Purchases', 'Average Purchase Amount']])
+scaled_data = scaler.fit_transform(customer_data[['Total Purchases', 'Average Purchase Amount' , 'Join Time Customer']])
 
 # Gán các giá trị bị thiếu bằng giá trị trung bình
 imputer = SimpleImputer(strategy='mean')
@@ -73,16 +75,22 @@ kmeans = KMeans(n_clusters=5, random_state=42)
 customer_data['Cluster'] = kmeans.fit_predict(scaled_data_imputed)
 
 # Trực quan hóa và giải thích các cụm
-fig = plt.figure(figsize=(10, 6))
+plt.figure(figsize=(10, 6))
 sns.scatterplot(data=customer_data, x='Total Purchases', y='Average Purchase Amount', hue='Cluster', palette='viridis')
 plt.title('Customer Segmentation based on Total Purchases and Average Purchase Amount')
-st.pyplot(fig)
+plt.show()
 
 # Analyze other metrics by cluster
 cluster_summary = customer_data.groupby('Cluster').agg({
     'Total Purchases': 'mean',
-    'Average Purchase Amount': 'mean'
+    'Average Purchase Amount': 'mean',
+    'Join Time Customer': 'mean'
 }).reset_index()
+
+cluster_summary = cluster_summary.sort_values(by='Total Purchases', ascending=True).reset_index(drop = True)
+cluster_summary['rank'] = ['bronze' , 'silver', 'gold' , 'platinum' , 'diamond']
+# rank = pd.DataFrame(data = {'Cluster' : [0,1,2,3,4] , 'rank' : ['bronze' , 'silver', 'gold' , 'platinum' , 'diamond']})
+# cluster_summary = cluster_summary.merge(rank , how = 'left' , on = 'Cluster')
 
 st.write("## DataFrame Cluster Customer")
 
