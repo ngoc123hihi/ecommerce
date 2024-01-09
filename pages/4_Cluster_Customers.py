@@ -49,6 +49,9 @@ customer_df['birthdate'] = pd.to_datetime(customer_df['birthdate'])
 customer_df["full_name"] = customer_df['first_name'].astype(str) +" "+ customer_df["last_name"]
 
 df_transaction_cus = transaction_df.merge(customer_df , how = 'left' , on = 'customer_id')
+df_transaction_cus = df_transaction_cus.dropna()
+
+df_transaction_cus['join_time'] = ((datetime.now() - df_transaction_cus['first_join_date']).dt.days/ 30).round().astype(np.int64)
 
 total_purchase_per_customer = df_transaction_cus.groupby('full_name')['total_amount'].sum()
 
@@ -75,10 +78,10 @@ kmeans = KMeans(n_clusters=5, random_state=42)
 customer_data['Cluster'] = kmeans.fit_predict(scaled_data_imputed)
 
 # Trực quan hóa và giải thích các cụm
-plt.figure(figsize=(10, 6))
+fig = plt.figure(figsize=(10, 6))
 sns.scatterplot(data=customer_data, x='Total Purchases', y='Average Purchase Amount', hue='Cluster', palette='viridis')
 plt.title('Customer Segmentation based on Total Purchases and Average Purchase Amount')
-plt.show()
+st.pyplot(fig)
 
 # Analyze other metrics by cluster
 cluster_summary = customer_data.groupby('Cluster').agg({
@@ -94,7 +97,5 @@ cluster_summary['rank'] = ['bronze' , 'silver', 'gold' , 'platinum' , 'diamond']
 
 st.write("## DataFrame Cluster Customer")
 
-rank = pd.DataFrame(data = {'Cluster' : [0,1,2,3 , 4] , 'rank' : ['bronze' , 'silver', 'gold' , 'platinum' , 'diamond']})
-cluster_summary = cluster_summary.merge(rank , how = 'left' , on = 'Cluster')
 st.dataframe(cluster_summary)
 
